@@ -1,11 +1,11 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import axios from "axios";
+import PlayCircleIcon from "@mui/icons-material/PlayCircle";
 
 function SearchBar() {
   const [input, setInput] = useState("");
   const [dictionaryList, setDictionaryList] = useState([]);
-  
 
   const getDictionaryList = async (list) => {
     if (list) {
@@ -33,37 +33,51 @@ function SearchBar() {
         type="text"
         value={input}
         onChange={(event) => {
+          dictionaryList;
           setInput(event.target.value);
         }}
       />
       <div>
-        <div className="container mx-auto pl-10">
+        <div className="container mx-auto ">
           {dictionaryList.length > 0 ? (
             <>
               <h1>{dictionaryList[0].word}</h1>
               <h3>{dictionaryList[0].phonetic}</h3>
-              <div className="flex items-center">
-                <span>none</span>
-                <hr className="flex-grow border-gray-300 mx-2" />
-              </div>
-
-              <div>
-                <h3>Meaning</h3>
-                <ul>
-                  {dictionaryList.map((item, index) =>
-                    item.meanings.map((meaning, meaningIndex) => (
-                      <li key={`${index}-${meaningIndex}`}>{meaning.definitions[0].definition}
-                        <br />
-                        <em>Example: {meaning.definitions[0].example}</em>
-                      </li>
-                    ))
-                  )}
-                </ul>
-              </div>
+              <PlayCircleIcon></PlayCircleIcon>
+              {dictionaryList[0].meanings.map((meaning, _meaningIndex) => (
+                <>
+                  <div className="flex items-center">
+                    <span>{meaning.partOfSpeech}</span>
+                    <hr className="flex-grow border-gray-300 mx-2" />
+                  </div>
+                  <div>
+                    <h3>Meaning</h3>
+                    <ul class="list-disc list-inside">
+                      {meaning.definitions.map(
+                        (definition, definitionIndex) => (
+                          <>
+                            <li key={definitionIndex}>
+                              {definition.definition}
+                            </li>
+                            {definition.example ? (
+                              <span>"{definition.example}"</span>
+                            ) : null}
+                          </>
+                        )
+                      )}
+                    </ul>
+                    {meaning.synonyms.length > 0 ? (
+                      <span>Synonyms: {meaning.synonyms[0]}</span>
+                    ) : null}
+                  </div>
+                </>
+              ))}
+              <h3>
+                Source:
+                <span class="ml-4">{dictionaryList[0].sourceUrls}</span>
+              </h3>
             </>
-          ) : (
-            null
-          )}
+          ) : null}
         </div>
       </div>
     </div>

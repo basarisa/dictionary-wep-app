@@ -7,8 +7,6 @@ function App() {
     <>
       <Header />
       <SearchBar />
-      <h1>// SectionBody</h1>
-      
     </>
   );
 }
